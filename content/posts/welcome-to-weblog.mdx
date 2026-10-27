@@ -1,0 +1,96 @@
+---
+title: "Welcome to Weblog"
+date: "2024-01-15"
+tags: ["introduction", "meta"]
+excerpt: "Introducing a modern, fast weblog built with Next.js and MDX. Learn about the philosophy, features, and how to get started."
+coverImage: ""
+---
+
+Welcome to **Weblog** — a modern, fast, and beautiful weblog built for writers who want to focus on content.
+
+## Philosophy
+
+This weblog was built with a simple philosophy: **writing should be frictionless**. No complex CMS, no database, no vendor lock-in. Just Markdown files in a git repository that you own and control.
+
+Every post is a `.mdx` file in the `content/posts/` directory. Write in your favorite editor, commit, push, and your changes are live. Version control, backups, and collaboration come for free with git.
+
+## Features
+
+- **Dark/Light Mode** — Automatic detection + manual toggle, persisted in localStorage
+- **Responsive Design** — Mobile-first, looks great on all screen sizes
+- **Smooth Animations** — Subtle, performant animations with Framer Motion
+- **Accessibility** — Semantic HTML, ARIA labels, focus management, reduced motion support
+- **SEO Ready** — Open Graph, Twitter Cards, sitemap, RSS feed
+- **Syntax Highlighting** — Beautiful code blocks with language detection
+- **Tags** — Automatic tag pages with post counts
+- **Reading Time** — Automatic calculation per post
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router, Static Export)
+- **Content**: MDX with `next-mdx-remote`
+- **Styling**: Plain CSS with CSS Variables (no build step)
+- **Animations**: Framer Motion
+- **Typography**: Geist & Geist Mono (via `next/font`)
+- **Deployment**: GitHub Pages
+
+## Getting Started
+
+Want to use this for your own weblog? Here's how:
+
+1. Fork or clone this repository
+2. Run `npm install`
+3. Add `.mdx` files to `content/posts/`
+4. Run `npm run dev` to preview locally
+5. Push to GitHub and enable GitHub Pages
+
+Your site will be live at `https://yourusername.github.io/repository-name` (or your custom domain).
+
+## Creating Posts
+
+Create a new file in `content/posts/your-post-slug.mdx` with frontmatter:
+
+```markdown
+---
+title: "Your Post Title"
+date: "2024-01-15"
+tags: ["tag1", "tag2"]
+excerpt: "A brief summary for previews and SEO"
+coverImage: "/images/your-cover.jpg"  # optional
+---
+
+Your content here with **Markdown** and *MDX* support.
+```
+
+Or use the helper script: `npm run new-post` — it creates a template file with today's date.
+
+## Code Example
+
+Here's a JavaScript example with syntax highlighting:
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet('Weblog')); // "Hello, Weblog!"
+```
+
+And a Python example:
+
+```python
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+print(list(fibonacci(10)))
+# [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+```
+
+## What's Next?
+
+Check out the [About page](/about) to learn more, or browse the [tags](/tags) to explore topics.
+
+Happy writing! 🚀

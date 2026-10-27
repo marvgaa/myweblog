@@ -1,0 +1,125 @@
+---
+title: "Writing in MDX: Markdown Superpowers"
+date: "2024-01-18"
+tags: ["mdx", "markdown", "writing"]
+excerpt: "Discover how MDX supercharges your Markdown with React components, interactive elements, and more."
+coverImage: ""
+---
+
+MDX lets you write **React components** inside your Markdown. It's Markdown for the component era.
+
+## Why MDX?
+
+Traditional Markdown is great for static content. But sometimes you want:
+
+- Interactive charts
+- Custom components
+- Dynamic data
+- Embedded media
+
+MDX gives you all of this while keeping the simple Markdown syntax you love.
+
+## Basic Syntax
+
+All standard Markdown works:
+
+### Headings
+
+# H1
+## H2
+### H3
+#### H4
+
+### Lists
+
+**Unordered:**
+- Item one
+- Item two
+  - Nested item
+  - Another nested
+- Item three
+
+**Ordered:**
+1. First
+2. Second
+3. Third
+
+### Code
+
+Inline `code` and blocks:
+
+```typescript
+interface Post {
+  title: string;
+  date: string;
+  tags: string[];
+  content: string;
+}
+
+function renderPost(post: Post) {
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <time>{post.date}</time>
+      <div>{post.content}</div>
+    </article>
+  );
+}
+```
+
+### Tables
+
+| Feature | Markdown | MDX |
+|---------|----------|-----|
+| Headings | ✅ | ✅ |
+| Lists | ✅ | ✅ |
+| Code | ✅ | ✅ |
+| Components | ❌ | ✅ |
+| Interactivity | ❌ | ✅ |
+
+### Blockquotes
+
+> "MDX is Markdown for the component era. It lets you write JSX in your Markdown documents."
+> — The MDX Team
+
+## Using Components
+
+You can import and use React components directly:
+
+```mdx
+import { Chart } from '@/components/Chart';
+
+# My Data
+
+<Chart data={[1, 2, 3, 4, 5]} type="line" />
+```
+
+## Frontmatter
+
+Every post supports YAML frontmatter:
+
+```yaml
+---
+title: "Post Title"
+date: "2024-01-15"
+tags: ["tag1", "tag2"]
+excerpt: "Brief summary"
+coverImage: "/images/cover.jpg"
+---
+```
+
+## Tips for Great Posts
+
+1. **Use descriptive titles** — They appear in SEO, social shares, and navigation
+2. **Write a good excerpt** — This shows in previews and RSS feeds
+3. **Tag your posts** — Helps readers discover related content
+4. **Add cover images** — Visual appeal in social shares and post headers
+5. **Structure with headings** — Creates automatic table of contents
+
+## Conclusion
+
+MDX combines the best of both worlds: the simplicity of Markdown with the power of React. Start writing your next post today!
+
+---
+
+*This post was written in MDX. The source is a plain `.mdx` file in `content/posts/`.*

@@ -1,0 +1,191 @@
+---
+title: "Deploying to GitHub Pages"
+date: "2024-01-20"
+tags: ["deployment", "github", "devops"]
+excerpt: "Step-by-step guide to deploying your Next.js static export to GitHub Pages with automatic builds."
+coverImage: ""
+---
+
+GitHub Pages offers free, reliable hosting for static sites. With Next.js's static export, deployment is automatic.
+
+## Prerequisites
+
+- A GitHub account
+- A repository for your weblog
+- Node.js 18+ installed locally
+
+## Repository Setup
+
+1. **Create a new repository** on GitHub (public or private)
+2. **Clone it locally** and add your weblog files
+3. **Push to main branch**
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/yourusername/weblog.git
+git push -u origin main
+```
+
+## Enable GitHub Pages
+
+1. Go to your repository **Settings** → **Pages**
+2. Under **Build and deployment**:
+   - Source: **GitHub Actions**
+3. Save
+
+## GitHub Actions Workflow
+
+Create `.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+## Configuration Notes
+
+### Base Path
+
+If your repository is `username.github.io`, no changes needed.
+
+If it's `username.github.io/repo-name`, update `next.config.js`:
+
+```javascript
+const nextConfig = {
+  output: 'export',
+  images: { unoptimized: true },
+  basePath: '/repo-name',
+  assetPrefix: '/repo-name/',
+};
+module.exports = nextConfig;
+```
+
+And update internal links to use the base path.
+
+### Custom Domain
+
+1. Add a `CNAME` file to `public/` with your domain:
+   ```
+   blog.example.com
+   ```
+2. Configure DNS:
+   - **A records** for apex domain:
+     ```
+     185.199.108.153
+     185.199.109.153
+     185.199.110.153
+     185.199.111.153
+     ```
+   - **CNAME** for subdomain:
+     ```
+     username.github.io
+     ```
+3. Enable **Enforce HTTPS** in Pages settings
+
+## Local Preview
+
+```bash
+npm run build
+npx serve out
+# Visit http://localhost:3000
+```
+
+## Troubleshooting
+
+### 404 on Refresh
+
+GitHub Pages doesn't support client-side routing. With `output: 'export'`, all routes are pre-rendered as static HTML — no 404s.
+
+### Images Not Loading
+
+Ensure `images: { unoptimized: true }` in `next.config.js`. Use relative paths or full URLs.
+
+### Build Fails
+
+Check the Actions log. Common issues:
+- Missing dependencies → `npm ci` handles this
+- TypeScript errors → Run `npm run build` locally first
+- Out of memory → Add `NODE_OPTIONS=--max-old-space-size=4096`
+
+## Automatic Deployments
+
+Every push to `main` triggers a new deployment. The workflow:
+1. Checks out code
+2. Installs dependencies (cached)
+3. Builds static site to `out/`
+4. Uploads artifact
+5. Deploys to GitHub Pages
+
+Typical deploy time: **30-60 seconds**.
+
+## Monitoring
+
+- **Actions tab** → See build/deploy history
+- **Settings → Pages** → See live URL, custom domain status
+- **Uptime**: GitHub Pages has 99.9%+ uptime
+
+## Alternative: Vercel
+
+For zero-config deployments with preview URLs:
+
+1. Import repo in Vercel
+2. Detects Next.js automatically
+3. Deploys on every push
+4. Preview URLs for PRs
+
+But GitHub Pages is free for private repos too, and keeps everything in GitHub.
+
+---
+
+**Next step**: Push your first post and watch it go live! 🚀
